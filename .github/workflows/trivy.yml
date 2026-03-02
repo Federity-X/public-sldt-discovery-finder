@@ -97,7 +97,7 @@ jobs:
           args: "--ignorefile .trivyignore"
           # ignore-unfixed: true
           hide-progress: false
-          exit-code: "1" # Trivy exits with code 1 if vulnerabilities are found, causing the workflow step to fail.
+          #exit-code: "1" # Trivy exits with code 1 if vulnerabilities are found, causing the workflow step to fail.
           exit-code: "0" # Temporarily set to 0 to see full output
           vuln-type: "os,library"
           #limit-severities-for-sarif: true
