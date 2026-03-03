@@ -28,6 +28,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Profile( "!local" )
 @Configuration
@@ -43,9 +44,9 @@ public class OAuthConfig {
                   .requestMatchers( HttpMethod.POST, "/api/v1.0/administration/connectors/discovery" ).hasRole( JwtRoles.ADD.getRole() )
                   .requestMatchers( HttpMethod.POST, "/api/v1.0/administration/connectors/discovery/search" ).hasRole( JwtRoles.VIEW.getRole() )
             )
-            .csrf().disable()
-            .sessionManagement().sessionCreationPolicy( SessionCreationPolicy.STATELESS )
-            .and()
+            .csrf( csrf -> csrf
+                  .ignoringRequestMatchers( new AntPathRequestMatcher( "/api/**" ) ) )
+            .sessionManagement( session -> session.sessionCreationPolicy( SessionCreationPolicy.STATELESS ) )
             .oauth2ResourceServer( oauth2 -> oauth2
                   .jwt( jwt -> jwt
                         .jwtAuthenticationConverter( jwtAuthenticationConverter ) ) );

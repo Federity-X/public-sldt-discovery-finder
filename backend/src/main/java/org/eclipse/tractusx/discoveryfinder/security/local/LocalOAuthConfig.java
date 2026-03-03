@@ -24,6 +24,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Profile( "local" )
 @Configuration
@@ -33,7 +34,9 @@ public class LocalOAuthConfig {
       return http
             .authorizeHttpRequests( auth -> auth
                   .anyRequest().permitAll() )
-            .csrf().disable()
-            .headers().frameOptions().disable().and().build();
+            .csrf( csrf -> csrf
+                  .ignoringRequestMatchers( new AntPathRequestMatcher( "/api/**" ) ) )
+            .headers( headers -> headers.frameOptions( frame -> frame.disable() ) )
+            .build();
    }
 }
