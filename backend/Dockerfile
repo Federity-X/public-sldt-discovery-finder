@@ -29,6 +29,9 @@ RUN mvn clean package
 # step 2: build image
 FROM eclipse-temurin:17-jre-alpine
 
+# Update Alpine packages to get security patches
+RUN apk upgrade --no-cache
+
 RUN addgroup -S spring \
     && adduser -S spring -G spring \
     && mkdir -p /service \
